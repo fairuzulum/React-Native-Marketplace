@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { app } from "../../firebaseConfig";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { getFirestore, getDocs, collection, addDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
-import { getStorage, ref, uploadBytes } from "firebase/storage"
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export default function AddPostScreen() {
   const [image, setImage] = useState(null);
@@ -49,13 +49,23 @@ export default function AddPostScreen() {
   };
 
   const onSubmitMethod = async (value) => {
-    value.image = image;
-    const resp = await fetch(image)
-    const blob = await resp.blob()
-    const storageRef = ref(storage, `voidPost/`+ Date.now() + ".jpg");
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      console.log('Uploaded a blob or file!')
-    })
+    const resp = await fetch(image);
+    const blob = await resp.blob();
+    const storageRef = ref(storage, `voidPost/` + Date.now() + ".jpg");
+    uploadBytes(storageRef, blob)
+      .then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+      })
+      .then((resp) => {
+        getDownloadURL(storageRef).then(async (downloadUrl) => {
+          value.image = image;
+
+          const docRef = await addDoc(collection(db, "UserPost"), value);
+          if (docRef.id) {
+            ToastAndroid.show("Post Added", ToastAndroid.SHORT);
+          }
+        });
+      });
   };
 
   return (
