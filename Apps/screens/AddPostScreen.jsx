@@ -2,11 +2,12 @@ import {
   View,
   TextInput,
   StyleSheet,
-  Button,
   Text,
   TouchableOpacity,
   Image,
   ToastAndroid,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { app } from "../../firebaseConfig";
@@ -16,12 +17,15 @@ import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function AddPostScreen() {
   const [image, setImage] = useState(null);
   const db = getFirestore(app);
-  const [categoryList, setCategoryList] = useState([]);
   const storage = getStorage();
+  const [categoryList, setCategoryList] = useState([]);
+  const { user } = useUser();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getCategoryList();
@@ -49,6 +53,7 @@ export default function AddPostScreen() {
   };
 
   const onSubmitMethod = async (value) => {
+    setLoading(true);
     const resp = await fetch(image);
     const blob = await resp.blob();
     const storageRef = ref(storage, `voidPost/` + Date.now() + ".jpg");
@@ -58,11 +63,15 @@ export default function AddPostScreen() {
       })
       .then((resp) => {
         getDownloadURL(storageRef).then(async (downloadUrl) => {
-          value.image = image;
+          value.image = downloadUrl;
+          value.userName = user.fullName;
+          value.userEmail = user.primaryEmailAddress.emailAddress;
+          value.userImage = user.imageUrl;
 
           const docRef = await addDoc(collection(db, "UserPost"), value);
           if (docRef.id) {
-            ToastAndroid.show("Post Added", ToastAndroid.SHORT);
+            setLoading(false);
+            Alert.alert("Success", "Post added successfully");
           }
         });
       });
@@ -78,6 +87,9 @@ export default function AddPostScreen() {
           address: "",
           price: "",
           image: "",
+          userName: "",
+          userEmail: "",
+          userImage: "",
         }}
         onSubmit={(value) => onSubmitMethod(value)}
         validate={(value) => {
@@ -178,9 +190,17 @@ export default function AddPostScreen() {
             </View>
             <TouchableOpacity
               onPress={handleSubmit}
-              style={styles.submitButton}
+              style={{
+                ...styles.submitButton,
+                backgroundColor: loading ? "#ccc" : "#007BFF",
+              }}
+              disabled={loading}
             >
-              <Text style={styles.submitButtonText}>Submit</Text>
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.submitButtonText}>Submit</Text>
+              )}
             </TouchableOpacity>
           </View>
         )}
