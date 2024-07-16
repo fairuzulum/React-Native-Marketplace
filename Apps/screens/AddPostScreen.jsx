@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { app } from "../../firebaseConfig";
@@ -62,6 +63,32 @@ export default function AddPostScreen() {
           image: "",
         }}
         onSubmit={(value) => onSubmitMethod(value)}
+        validate={(value) => {
+          const errors = {};
+          if (!value.title) {
+            console.log("title is required");
+            ToastAndroid.show("Title is required", ToastAndroid.SHORT);
+            errors.title = "Title is required";
+          } else if (!value.desc) {
+            console.log("desc is required");
+            ToastAndroid.show("Description is required", ToastAndroid.SHORT);
+            errors.desc = "Description is required";
+          } else if (!value.category) {
+            console.log("category is required");
+            ToastAndroid.show("Category is required", ToastAndroid.SHORT);
+            errors.category = "Category is required";
+          } else if (!value.address) {
+            console.log("address is required");
+            ToastAndroid.show("Address is required", ToastAndroid.SHORT);
+            errors.address = "Address is required";
+          } else if (!value.price) {
+            console.log("price is required");
+            ToastAndroid.show("Price is required", ToastAndroid.SHORT);
+            errors.price = "Price is required";
+          }
+
+          return errors;
+        }}
       >
         {({
           handleChange,
@@ -69,6 +96,7 @@ export default function AddPostScreen() {
           handleSubmit,
           values,
           setFieldValue,
+          errors,
         }) => (
           <View style={styles.form}>
             <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
@@ -167,7 +195,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   form: {
-    marginTop:40,
+    marginTop: 40,
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
