@@ -15,11 +15,13 @@ import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, ref, uploadBytes } from "firebase/storage"
 
 export default function AddPostScreen() {
   const [image, setImage] = useState(null);
   const db = getFirestore(app);
   const [categoryList, setCategoryList] = useState([]);
+  const storage = getStorage();
 
   useEffect(() => {
     getCategoryList();
@@ -46,9 +48,14 @@ export default function AddPostScreen() {
     }
   };
 
-  const onSubmitMethod = (value) => {
+  const onSubmitMethod = async (value) => {
     value.image = image;
-    console.log(value);
+    const resp = await fetch(image)
+    const blob = await resp.blob()
+    const storageRef = ref(storage, `voidPost/`+ Date.now() + ".jpg");
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      console.log('Uploaded a blob or file!')
+    })
   };
 
   return (
@@ -69,22 +76,6 @@ export default function AddPostScreen() {
             console.log("title is required");
             ToastAndroid.show("Title is required", ToastAndroid.SHORT);
             errors.title = "Title is required";
-          } else if (!value.desc) {
-            console.log("desc is required");
-            ToastAndroid.show("Description is required", ToastAndroid.SHORT);
-            errors.desc = "Description is required";
-          } else if (!value.category) {
-            console.log("category is required");
-            ToastAndroid.show("Category is required", ToastAndroid.SHORT);
-            errors.category = "Category is required";
-          } else if (!value.address) {
-            console.log("address is required");
-            ToastAndroid.show("Address is required", ToastAndroid.SHORT);
-            errors.address = "Address is required";
-          } else if (!value.price) {
-            console.log("price is required");
-            ToastAndroid.show("Price is required", ToastAndroid.SHORT);
-            errors.price = "Price is required";
           }
 
           return errors;
