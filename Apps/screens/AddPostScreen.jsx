@@ -8,6 +8,8 @@ import {
   ToastAndroid,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { app } from "../../firebaseConfig";
@@ -78,7 +80,9 @@ export default function AddPostScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView>
+    <ScrollView>
+      <View style={styles.container}>
       <Formik
         initialValues={{
           title: "",
@@ -205,7 +209,9 @@ export default function AddPostScreen() {
           </View>
         )}
       </Formik>
-    </View>
+      </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
