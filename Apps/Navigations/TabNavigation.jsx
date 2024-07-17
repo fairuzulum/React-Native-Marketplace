@@ -64,7 +64,7 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color }) => (
             <Text style={{ color: color, fontSize: 12, marginBottom: 3 }}>
-              Home
+              Profile
             </Text>
           ),
           tabBarIcon: ({ color, size }) => (

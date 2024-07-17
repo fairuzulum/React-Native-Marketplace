@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Components/HomeScreen/Header";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import Slider from "../Components/HomeScreen/Slider";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { app } from "../../firebaseConfig";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import Categories from "../Components/HomeScreen/Categories";
+import LatestItemList from "../Components/HomeScreen/LatestItemList";
 
 export default function HomeScreen() {
   const db = getFirestore(app);
   const [sliderList, setSliderList] =useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [latestItemList, setLatestItemList] = useState([]);
 
   useEffect(() => {
     getSliders();
     getCategoryList();
+    getLatestItemList();
   }, []);   
 
 
@@ -33,11 +36,21 @@ export default function HomeScreen() {
       setCategoryList((categoryList) => [...categoryList, doc.data()]);
     });
   };
+
+  const getLatestItemList=async()=>{
+    setLatestItemList([])
+    const querySnapshot = await getDocs(collection(db, "UserPost"));
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        setLatestItemList((latestItemList)=>[...latestItemList, doc.data()])
+    });
+  }
   return (
-    <View className="px-3 py-10 bg-white flex-1">
+    <ScrollView className="px-3 py-10 bg-slate-100 flex-1">
       <Header />
       <Slider sliderList={sliderList} />
       <Categories categoryList={categoryList} />
-    </View>
+      <LatestItemList latestItemList={latestItemList} />
+    </ScrollView>
   );
 }

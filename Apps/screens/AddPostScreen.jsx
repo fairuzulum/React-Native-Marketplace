@@ -94,6 +94,7 @@ export default function AddPostScreen() {
           userName: "",
           userEmail: "",
           userImage: "",
+          createdAt: Date.now(),
         }}
         onSubmit={(value) => onSubmitMethod(value)}
         validate={(value) => {
