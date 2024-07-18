@@ -54,7 +54,7 @@ export default function HomeScreen() {
       <Slider sliderList={sliderList} />
       <Categories categoryList={categoryList} />
       <LatestItemList
-        latestItemList={latestItemList}
+        latestItemList={latestItemList.slice(0, 6)}
         heading={"Latest Items"}
       />
     </ScrollView>
