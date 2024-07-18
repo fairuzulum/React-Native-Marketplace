@@ -10,7 +10,7 @@ node_modules/
 dist/
 web-build/
 
-firebaseConfig.jsx
+/firebaseConfig.jsx
 
 # Native
 *.orig.*
