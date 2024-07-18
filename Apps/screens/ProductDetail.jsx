@@ -160,7 +160,7 @@ export default function ProductDetail() {
         <View style={{ flex: 1, height: 1 }} className="bg-slate-300" />
       </View>
       <View className="bg-slate-50">
-        <LatestItemList latestItemList={latestItemList} />
+        <LatestItemList latestItemList={latestItemList.slice(0,4)} />
       </View>
     </ScrollView>
   );

@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fc2808",
-    padding: 20,
+    padding: 30,
   },
   form: {
     marginTop: 40,
