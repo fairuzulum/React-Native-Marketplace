@@ -56,7 +56,6 @@ export default function HomeScreen() {
       <LatestItemList
         latestItemList={latestItemList}
         heading={"Latest Items"}
-        
       />
     </ScrollView>
   );
