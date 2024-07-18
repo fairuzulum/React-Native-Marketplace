@@ -1,0 +1,101 @@
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import LatestItemList from "../Components/HomeScreen/LatestItemList";
+import { collection, getDocs, getFirestore, orderBy } from "firebase/firestore";
+import { app } from "../../firebaseConfig";
+
+export default function ProductDetail() {
+  const { params } = useRoute();
+  const [product, setProduct] = useState({});
+  const navigation = useNavigation();
+  const [latestItemList, setLatestItemList] = useState([]);
+  const db = getFirestore(app);
+
+  useEffect(() => {
+    params && setProduct(params.product);
+    getLatestItemList();
+  }, [params]);
+
+  const getLatestItemList = async () => {
+    setLatestItemList([]);
+    const querySnapshot = await getDocs(
+      collection(db, "UserPost"),
+      orderBy("createdAt", "desc")
+    );
+    querySnapshot.forEach((doc) => {
+      setLatestItemList((latestItemList) => [...latestItemList, doc.data()]);
+    });
+  };
+
+  const numberFormat = (value) =>
+    new Intl.NumberFormat("en-ID", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      className="flex-1 bg-white"
+    >
+      <Image source={{ uri: product.image }} className="h-[320px] w-full" />
+
+      <View className="p-2 w-[340px]">
+        <Text className="font-bold text-[#fc2808]">
+          Rp
+          <Text className="text-[26px] text-[#fc2808] font-bold">
+            {numberFormat(product.price)}
+          </Text>
+        </Text>
+
+        <Text className="text-[16px] text-slate-900">{product.title}</Text>
+        <TouchableOpacity
+          className="border-[1px] p-1 rounded-full bg-blue-500 border-slate-50 w-[70px] items-center"
+          onPress={() =>
+            navigation.navigate("item-list", { category: product.category })
+          }
+        >
+          <Text className="text-slate-50 text-[10px] font-semibold">
+            {product.category}
+          </Text>
+        </TouchableOpacity>
+
+        <Text className="text-[17px] font-bold text-slate-500 mt-3">
+          Description
+        </Text>
+        <Text className="text-[14px] ">{product.desc}</Text>
+
+        <View className="flex flex-row items-center">
+          <View className="bg-slate-400 mt-2 flex-1 h-[1px]" />
+        </View>
+
+        <View className="flex flex-row gap-2 mt-2 mb-3">
+          <Image
+            source={{ uri: product.userImage }}
+            className="rounded-full h-10 w-10"
+          />
+          <View>
+            <Text className="text-[14px] font-bold">{product.userName}</Text>
+            <Text className="text-[12px]">{product.userEmail}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flex: 1, height: 1 }} className="bg-slate-300" />
+        <View>
+          <Text
+            style={{ width: 120, textAlign: "center" }}
+            className="text-slate-800"
+          >
+            Another Product
+          </Text>
+        </View>
+        <View style={{ flex: 1, height: 1 }} className="bg-slate-300" />
+      </View>
+      <View className="bg-slate-50">
+        <LatestItemList latestItemList={latestItemList} />
+      </View>
+    </ScrollView>
+  );
+}

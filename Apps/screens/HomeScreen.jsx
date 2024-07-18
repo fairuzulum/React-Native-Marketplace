@@ -10,7 +10,7 @@ import LatestItemList from "../Components/HomeScreen/LatestItemList";
 
 export default function HomeScreen() {
   const db = getFirestore(app);
-  const [sliderList, setSliderList] =useState([]);
+  const [sliderList, setSliderList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [latestItemList, setLatestItemList] = useState([]);
 
@@ -18,14 +18,13 @@ export default function HomeScreen() {
     getSliders();
     getCategoryList();
     getLatestItemList();
-  }, []);   
-
+  }, []);
 
   const getSliders = async () => {
     setSliderList([]);
     const querySnapshot = await getDocs(collection(db, "Sliders"));
     querySnapshot.forEach((doc) => {
-      setSliderList(sliderList => [...sliderList, doc.data()]);
+      setSliderList((sliderList) => [...sliderList, doc.data()]);
     });
   };
 
@@ -37,20 +36,28 @@ export default function HomeScreen() {
     });
   };
 
-  const getLatestItemList=async()=>{
-    setLatestItemList([])
-    const querySnapshot = await getDocs(collection(db, "UserPost"),orderBy('createdAt','desc'));
+  const getLatestItemList = async () => {
+    setLatestItemList([]);
+    const querySnapshot = await getDocs(
+      collection(db, "UserPost"),
+      orderBy("createdAt", "desc")
+    );
     querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        setLatestItemList((latestItemList)=>[...latestItemList, doc.data()])
+      setLatestItemList((latestItemList) => [...latestItemList, doc.data()]);
     });
-  }
+  };
+
+ 
   return (
     <ScrollView className="px-3 py-10 bg-slate-100 flex-1">
       <Header />
       <Slider sliderList={sliderList} />
       <Categories categoryList={categoryList} />
-      <LatestItemList latestItemList={latestItemList}  heading={'Latest Items'}/>
+      <LatestItemList
+        latestItemList={latestItemList}
+        heading={"Latest Items"}
+        
+      />
     </ScrollView>
   );
 }
