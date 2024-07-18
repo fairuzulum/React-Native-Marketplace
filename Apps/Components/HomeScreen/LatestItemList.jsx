@@ -11,7 +11,7 @@ export default function LatestItemList({ latestItemList, heading }) {
 
   return (
     <View className="mt-3 mb-10">
-      <Text className="font-bold text-[20px]">{heading}</Text>
+      <Text className="font-semibold text-[20px] text-slate-50">{heading}</Text>
       <FlatList
         data={latestItemList}
         numColumns={2}

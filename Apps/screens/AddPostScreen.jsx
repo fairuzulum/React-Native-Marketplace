@@ -197,7 +197,7 @@ export default function AddPostScreen() {
               onPress={handleSubmit}
               style={{
                 ...styles.submitButton,
-                backgroundColor: loading ? "#ccc" : "#007BFF",
+                backgroundColor: loading ? "#ccc" : "#fc2808",
               }}
               disabled={loading}
             >
@@ -219,7 +219,7 @@ export default function AddPostScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fc2808",
     padding: 20,
   },
   form: {

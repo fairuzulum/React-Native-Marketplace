@@ -30,16 +30,16 @@ export default function LoginScreen() {
         className="w-full h-[350px] object-cover"
       />
       <View className="p-8 mt-[-50] rounded-t-3xl">
-        <Text className="text-[30px] font-bold">Void Marketplace</Text>
-        <Text className="text-slate-500 text-[16px]">
+        <Text className="text-[30px] font-bold text-[#fc2808]">Void Marketplace</Text>
+        <Text className="text-slate-600 text-[16px] font-semibold">
           Tempat belanja online no.1 di Indonesia
         </Text>
         <Image
           source={require("./../../assets/images/bag.png")}
           className='w-[300px] h-[300px]'
         />
-        <TouchableOpacity onPress={onPress} className="p-3 bg-blue-500 rounded-full">
-          <Text className="text-white text-center text-[18px]">Mulai</Text>
+        <TouchableOpacity onPress={onPress} className="p-3 bg-[#fc2808] rounded-full">
+          <Text className="text-slate-50 text-center font-semibold text-[18px]">Mulai</Text>
         </TouchableOpacity>
       </View>
     </View>

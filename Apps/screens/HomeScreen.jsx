@@ -49,7 +49,7 @@ export default function HomeScreen() {
 
  
   return (
-    <ScrollView className="px-3 py-10 bg-slate-100 flex-1">
+    <ScrollView className="px-3 py-10 bg-[#fc2808] flex-1">
       <Header />
       <Slider sliderList={sliderList} />
       <Categories categoryList={categoryList} />

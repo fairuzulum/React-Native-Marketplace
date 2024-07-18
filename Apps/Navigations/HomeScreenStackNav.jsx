@@ -22,7 +22,7 @@ export default function HomeScreenStackNav() {
         options={({ route }) => ({
           title: route.params.category,
           headerStyle: {
-            backgroundColor: "#3b82f6",
+            backgroundColor: "#fc2808",
           },
           headerTintColor: "#fff",
         })}

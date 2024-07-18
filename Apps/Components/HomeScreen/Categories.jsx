@@ -6,13 +6,13 @@ export default function Categories({ categoryList }) {
   const navigation = useNavigation();
   return (
     <View className="mt-3">
-      <Text className="font-bold text-[20px]">Categories</Text>
+      <Text className="font-semibold text-[20px] text-slate-50">Categories</Text>
       <FlatList
         data={categoryList}
         numColumns={4}
         renderItem={({ item, index }) => (
           <TouchableOpacity
-          className="flex-1 items-center justify-center p-2 border-[1px] border-slate-300 m-1 rounded-lg bg-white"
+          className="flex-1 items-center justify-center p-2 border-[1px] border-[#fc2808] m-1 rounded-lg bg-white"
           onPress={() => navigation.navigate("item-list", { category: item.name })}
           >
             <Image source={{ uri: item.icon }} className="h-[40px] w-[40px]" />
