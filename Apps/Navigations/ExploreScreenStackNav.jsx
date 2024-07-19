@@ -14,6 +14,7 @@ export default function ExploreScreenStackNav() {
         options={{
           headerShown: false,
         }}
+        
       />
       <Stack.Screen
         name="product-detail"
