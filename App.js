@@ -8,7 +8,7 @@ import TabNavigation from "./Apps/Navigations/TabNavigation";
 
 export default function App() {
   return (
-    <ClerkProvider publishableKey="pk_test_ZWxlY3RyaWMtZG9kby04Mi5jbGVyay5hY2NvdW50cy5kZXYk">
+    <ClerkProvider publishableKey={process.env.REACT_APP_CLERK_PUBLISHABLE_KEY}>
       <View className="flex-1 bg-white">
         <StatusBar style="auto" />
         <SignedIn>
